@@ -32,6 +32,7 @@ def weather_forecast(appid, latitude, longitude, language, units):
             "?appid={}&lat={}&lon={}&lang={}&units={}".format(
                 appid, latitude, longitude, language, units))
         resopnse.raise_for_status()
+
         return resopnse.json()
 
     except Exception as e:
@@ -129,7 +130,7 @@ def main():
                              address)
 
         # start weather forecast thread
-        timer_thread = RepeatedTimer(600, weather_forecast, [
+        timer_thread = RepeatedTimer(30, weather_forecast, [
             config["openweather_appid"], config["latitude"],
             config["longitude"], language, config["units"]
         ])
@@ -233,6 +234,7 @@ def main():
 
     except Exception as e:
         logging.error(e, exc_info=True)
+
 
     finally:
         if args.screenshot:

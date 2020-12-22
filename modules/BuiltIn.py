@@ -5,8 +5,9 @@
 import datetime
 import logging
 import time
+import csv
+import pandas
 from modules.WeatherModule import WeatherModule, Utils
-
 
 class Alerts(WeatherModule):
     """Any severe weather alerts pertinent
@@ -39,17 +40,20 @@ class Clock(WeatherModule):
 
     def draw(self, screen, weather, updated):
         timestamp = time.time()
-        locale_date = Utils.strftime(timestamp, "%a, %x")
-        locale_time = Utils.strftime(timestamp, "%H:%M")
-        locale_second = Utils.strftime(timestamp, " %S")
+        #locale_date = Utils.strftime(timestamp, "%a, %x")
+        #locale_time = Utils.strftime(timestamp, "%H:%M")
+        #locale_second = Utils.strftime(timestamp, " %S")
+        locale_date = Utils.strftime(timestamp, "%A - %d %b %Y")
+        locale_time = Utils.strftime(timestamp, "%H:%M:%S")
 
         self.clear_surface()
-        self.draw_text(locale_date, (0, 0), "small", "white")
-        (right, _bottom) = self.draw_text(locale_time, (0, 20),
-                                          "large",
+        self.draw_text(locale_date, (0, 0), "medium", "white", align="center")
+        (right, _bottom) = self.draw_text(locale_time, (16, 20),
+                                          "xlarge",
                                           "white",
-                                          bold=True)
-        self.draw_text(locale_second, (right, 20), "medium", "gray", bold=True)
+                                          bold=True,
+                                          align="center")
+        #self.draw_text(locale_second, (right, 20), "medium", "gray", bold=True)
         self.update_screen(screen)
 
 
@@ -64,13 +68,13 @@ class Location(WeatherModule):
         message = self.location["address"]
 
         self.clear_surface()
-        for size in ("large", "medium", "small"):
-            width, height = self.text_size(message, size)
-            if width <= self.rect.width and height <= self.rect.height:
-                break
-        if width > self.rect.width:
-            message = message.split(",")[0]
-        self.draw_text(message, (0, 0), size, "white", align="right")
+        #for size in ("large", "medium", "small"):
+        #    width, height = self.text_size(message, size)
+        #    if width <= self.rect.width and height <= self.rect.height:
+        #        break
+        #if width > self.rect.width:
+        #    message = message.split(",")[0]
+        self.draw_text(message, (0, 0), "smallmedium", "white", align="right")
         self.update_screen(screen)
 
 
@@ -96,15 +100,20 @@ class Weather(WeatherModule):
         feels_like = current["feels_like"]
         pressure = current["pressure"]
         uv_index = int(current["uvi"])
+        #rain_1h = current["rain"]["1h"]
+        #print(rain_1h)
         long_summary = daily["weather"][0]["description"]
         temperature_high = daily["temp"]["max"]
         temperature_low = daily["temp"]["min"]
+        rain_daily = daily["rain"]
+        print(rain_daily)
 
         heat_color = Utils.heat_color(temperature, humidity, self.units)
         uv_color = Utils.uv_color(uv_index)
         weather_icon = Utils.weather_icon(icon, self.icon_size)
 
-        temperature = Utils.temperature_text(int(temperature), self.units)
+        #temperature = Utils.temperature_text(int(temperature), self.units)
+        temperature = Utils.temperature_text(round(temperature, 1), self.units)
         feels_like = Utils.temperature_text(int(feels_like), self.units)
         temperature_low = Utils.temperature_text(int(temperature_low),
                                                  self.units)
@@ -113,6 +122,43 @@ class Weather(WeatherModule):
         humidity = Utils.percentage_text(humidity)
         uv_index = str(uv_index)
         pressure = Utils.pressure_text(int(pressure))
+
+        """
+        HistoryGraphLog
+        """
+        xtemperature = temperature
+        xtemperature = xtemperature[:-2]
+        xpressure = pressure
+        xpressure = xpressure[:-2]
+        xtimestamp = time.strftime('%m-%d-%Y %H:%M:%S')
+
+        graph = "GraphDataLog.txt"
+        file = open(graph, "a", newline='')
+
+        with file:
+            myfields = ['xdate', 'temp', 'press', 'rain_1h']
+            writer = csv.DictWriter(file, fieldnames=myfields)
+            #writer.writeheader()
+            writer.writerow({'xdate': xtimestamp, 'temp': xtemperature, 'press': xpressure, 'rain_1h': rain_daily})
+        #file.close()
+        df = pandas.read_csv(graph)
+
+        # convert to datetime
+        df['xdate'] = pandas.to_datetime(df['xdate'])
+        # calculate mask
+        m1 = df['xdate'] >= (pandas.to_datetime('now') - pandas.DateOffset(days=1))
+        m2 = df['xdate'] <= pandas.to_datetime('now')
+        #mask = m1 & m2
+        mask = m1
+        # output masked dataframes
+        # df[~mask].to_csv('out1.csv', index=False)
+        #Remove time from datetime
+        #df['xdate'] = pandas.to_datetime(df['xdate']).dt.date
+        df[mask].to_csv('GraphData.csv', index=False)
+        """
+        END GraphLog
+        """
+
 
         text_x = weather_icon.get_size()[0]
         text_width = self.rect.width - text_x
@@ -142,17 +188,17 @@ class Weather(WeatherModule):
 
         self.clear_surface()
         self.draw_image(weather_icon, (0, 0))
-        self.draw_text(message1, (text_x, 0), "medium", heat_color, bold=True)
-        self.draw_text(message2, (text_x, 25), "small", "white")
+        self.draw_text(message1, (text_x, 15), "large", heat_color, bold=True)
+        self.draw_text(message2, (text_x, 52), "small", "white")
         i = message3.index("UV")
-        (right, _bottom) = self.draw_text(message3[:i], (text_x, 40), "small",
+        (right, _bottom) = self.draw_text(message3[:i], (text_x, 70), "small",
                                           "white")
-        self.draw_text(message3[i:], (right, 40), "small", uv_color, bold=True)
-        height = 55 + (15 * (max_lines - len(message4s))) / 2
+        self.draw_text(message3[i:], (right, 70), "small", uv_color, bold=True)
+        height = 70 + (15 * (max_lines - len(message4s))) / 2
         for message in message4s:
             self.draw_text(message, (text_x, height),
                            "small",
-                           "white",
+                           "blue",
                            bold=True)
             height += 15
         self.update_screen(screen)
@@ -186,7 +232,7 @@ class DailyWeatherForecast(WeatherModule):
 
         self.clear_surface()
         self.draw_text(day_of_week, (0, 0), "small", "orange", align="center")
-        self.draw_text(message, (0, 15), "small", "gray", align="center")
+        self.draw_text(message, (0, 17), "xsmall", "gray", align="center")
         self.draw_image(weather_icon,
                         ((self.rect.width - self.icon_size) / 2, 30 +
                          (self.rect.height - 30 - self.icon_size) / 2))
@@ -237,14 +283,14 @@ class SunriseSuset(WeatherModule):
         sunrise = current["sunrise"]
         sunset = current["sunset"]
 
-        surise = "{} \u2197".format(Utils.strftime(sunrise, "%H:%M"))
-        sunset = "\u2198 {}".format(Utils.strftime(sunset, "%H:%M"))
+        sunrise = "{} \u2197".format(Utils.strftime(sunrise, "%H:%M"))
+        sunset = "\u2199 {}".format(Utils.strftime(sunset, "%H:%M"))
         sun_icon = Utils.weather_icon("01d", self.icon_size)
 
         self.clear_surface()
         self.draw_image(sun_icon, ((self.rect.width - self.icon_size) / 2,
                                    (self.rect.height - self.icon_size) / 2))
-        self.draw_text(surise, (0, 5), "small", "white", align="center")
+        self.draw_text(sunrise, (0, 5), "small", "white", align="center")
         self.draw_text(sunset, (0, self.rect.height - 20),
                        "small",
                        "white",

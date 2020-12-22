@@ -36,6 +36,7 @@ class Covid19Japan(WeatherModule):
         df["確定日"] = pd.to_datetime(df["確定日"])
         df["人数"] = 1
         new_cases = pd.DataFrame(df.groupby("確定日").sum()["人数"])
+        print(new_cases)
         total_cases = new_cases.cumsum()
 
         # Filter the data
@@ -49,7 +50,7 @@ class Covid19Japan(WeatherModule):
         total = total_cases.tail(1)["人数"][0]
         dt = 70 / (new_cases.tail(5)["人数"].mean() /
                    total_cases.tail(2)["人数"][0] * 100)
-
+        #print(df)
         # Plot
         self.clear_surface()
         GraphUtils.set_font(self.fonts["name"])

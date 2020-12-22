@@ -1,12 +1,13 @@
 # pylint: disable=invalid-name, too-few-public-methods
 """ Glaph utility class
 """
-
+import gc
 import io
 import logging
 import threading
 import time
 import numpy as np
+import pandas
 import pygame
 import matplotlib
 import matplotlib.pyplot as plt
@@ -46,6 +47,61 @@ def synchronized(wrapped):
 def _draw_2axis_graph(screen, surface, rect, times, y1, ylabel1, y2, ylabel2,
                       title, yscale1, yscale2):
     # plot graph
+    df = pandas.read_csv('GraphData.csv', usecols=['xdate', 'temp', 'press', 'rain_1h'], parse_dates=['xdate'])
+    #print(df)
+    df['xdate'] = pandas.to_datetime(df['xdate'])
+    df.set_index('xdate', inplace=True)
+    print(df.info())
+    # Create subplots sharing x axis
+    xaxis = df.index
+    x3axis = df.index
+    yaxis = df['temp']
+    y2axis = df['press']
+    y3axis = df['rain_1h']
+
+    f, (ax, ax2, ax3) = plt.subplots(3, figsize=(4.9, 3.0))
+    plt.subplots_adjust(hspace=2.0)
+
+    #ax = df.plot(use_index=True, y='temp', kind='line', color='blue', legend=False, linewidth=0.5, figsize=(4.9, 1.5))
+    ax.plot(xaxis, yaxis, color='red', linewidth=0.4)
+    #ax2 = df.plot(use_index=True, y='press', legend=False, color='coral', linewidth=0.5, secondary_y=True, ax=ax)
+    ax2.plot(xaxis, y2axis, color='blue', linewidth=0.4)
+    ax3.bar(x3axis, y3axis, color='blue', width=0.4)
+    ax.set(xlabel='', ylabel='')
+    ax2.set(xlabel='', ylabel='')
+    ax3.set(xlabel='', ylabel='')
+    ax.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
+    ax.tick_params(axis='y', labelsize=8, colors='white')
+    ax2.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
+    ax2.tick_params(axis='y', labelsize=8, colors='white')
+    ax3.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
+    ax3.tick_params(axis='y', labelsize=8, colors='white')
+    #ax.legend(["Temp"], loc='best', fontsize='x-small')
+    ax.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
+    ax2.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
+    ax3.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
+    # set ticks every hour
+    ax.xaxis.set_major_locator(plt.LinearLocator(6))
+    plt.setp(ax.get_xticklabels(), rotation=0, ha='center')
+    ax2.xaxis.set_major_locator(plt.LinearLocator(6))
+    plt.setp(ax2.get_xticklabels(), rotation=0, ha='center')
+    ax3.xaxis.set_major_locator(plt.LinearLocator(6))
+    plt.setp(ax3.get_xticklabels(), rotation=0, ha='center')
+    # set major ticks format
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
+    ax2.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
+    ax3.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
+    ax.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.1f} °C"))
+    ax2.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.0f} pa"))
+    ax3.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.1f} mm"))
+    #plt.xticks(rotation=0, horizontalalignment='center')
+    ##ax.set_xticklabels(df.index, rotation=0, ha='center')
+
+    # plt.axes(frameon=True)
+
+
+    """
+    ======
     fig, ax1 = plt.subplots(figsize=(rect.width / dpi, rect.height / dpi))
 
     #if title:
@@ -90,17 +146,18 @@ def _draw_2axis_graph(screen, surface, rect, times, y1, ylabel1, y2, ylabel2,
       #  else:
       #      ax1.xaxis.set_major_locator(HourLocator(interval=24))
       #      ax1.xaxis.set_minor_locator(HourLocator(interval=6))
-
+    """
     # convert to pygame image
     f = io.BytesIO()
-    #plt.tight_layout()
-    plt.xticks(rotation=0, horizontalalignment='center')
-    plt.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.5)
+    plt.tight_layout()
     plt.savefig(f, format="png", transparent=True, bbox_inches='tight')
-    ax1.cla()
-    plt.close(fig)
+    plt.close
     f.seek(0)
     image = pygame.image.load(f)
+    print(df.info())
+    ###del df
+    ###gc.collect()
+    ###df = pandas.DataFrame
 
     # draw image
     surface.blit(image, (0, 0))

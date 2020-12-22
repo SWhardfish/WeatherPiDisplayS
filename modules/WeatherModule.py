@@ -180,7 +180,8 @@ class Utils:
         """Create a new Font object
         """
         logging.debug("font %s %spxl loaded", name, size)
-        return pygame.font.SysFont(name, size, bold)
+        #return pygame.font.SysFont(name, size, bold)
+        return pygame.font.Font(name, size)
 
     @staticmethod
     @lru_cache()
