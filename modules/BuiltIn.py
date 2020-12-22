@@ -40,9 +40,6 @@ class Clock(WeatherModule):
 
     def draw(self, screen, weather, updated):
         timestamp = time.time()
-        #locale_date = Utils.strftime(timestamp, "%a, %x")
-        #locale_time = Utils.strftime(timestamp, "%H:%M")
-        #locale_second = Utils.strftime(timestamp, " %S")
         locale_date = Utils.strftime(timestamp, "%A - %d %b %Y")
         locale_time = Utils.strftime(timestamp, "%H:%M:%S")
 
@@ -53,7 +50,6 @@ class Clock(WeatherModule):
                                           "white",
                                           bold=True,
                                           align="center")
-        #self.draw_text(locale_second, (right, 20), "medium", "gray", bold=True)
         self.update_screen(screen)
 
 
@@ -105,8 +101,9 @@ class Weather(WeatherModule):
         long_summary = daily["weather"][0]["description"]
         temperature_high = daily["temp"]["max"]
         temperature_low = daily["temp"]["min"]
-        rain_daily = daily["rain"]
-        print(rain_daily)
+        #rain_daily = daily["rain"]
+        rain_daily = current["temp"]  #temp fix
+        #print(rain_daily)
 
         heat_color = Utils.heat_color(temperature, humidity, self.units)
         uv_color = Utils.uv_color(uv_index)
@@ -124,7 +121,7 @@ class Weather(WeatherModule):
         pressure = Utils.pressure_text(int(pressure))
 
         """
-        HistoryGraphLog
+        HistoryGraphLog - log data to GraphDatalog.txt
         """
         xtemperature = temperature
         xtemperature = xtemperature[:-2]
