@@ -96,15 +96,14 @@ class Weather(WeatherModule):
         feels_like = current["feels_like"]
         pressure = current["pressure"]
         uv_index = int(current["uvi"])
-        #rain_1h = current["rain"]["1h"]
-        #print(rain_1h)
+        try:
+            rain_1h = current["rain"]["1h"]
+        except KeyError:
+            rain_1h = '0'
+        windspeed = current["wind_speed"]
         long_summary = daily["weather"][0]["description"]
         temperature_high = daily["temp"]["max"]
         temperature_low = daily["temp"]["min"]
-        #rain_daily = daily["rain"]
-        rain_daily = current["temp"]  #temp fix
-        #print(rain_daily)
-
         heat_color = Utils.heat_color(temperature, humidity, self.units)
         uv_color = Utils.uv_color(uv_index)
         weather_icon = Utils.weather_icon(icon, self.icon_size)
@@ -133,10 +132,10 @@ class Weather(WeatherModule):
         file = open(graph, "a", newline='')
 
         with file:
-            myfields = ['xdate', 'temp', 'press', 'rain_1h']
+            myfields = ['xdate', 'temp', 'press', 'rain_1h', 'windspeed']
             writer = csv.DictWriter(file, fieldnames=myfields)
             #writer.writeheader()
-            writer.writerow({'xdate': xtimestamp, 'temp': xtemperature, 'press': xpressure, 'rain_1h': rain_daily})
+            writer.writerow({'xdate': xtimestamp, 'temp': xtemperature, 'press': xpressure, 'rain_1h': rain_1h, 'windspeed': windspeed})
         #file.close()
         df = pandas.read_csv(graph)
 
