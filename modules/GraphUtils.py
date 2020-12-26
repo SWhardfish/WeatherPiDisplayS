@@ -40,7 +40,7 @@ def synchronized(wrapped):
 def _draw_2axis_graph(screen, surface, rect, times, y1, ylabel1, y2, ylabel2,
                       title, yscale1, yscale2):
     # Plot graph
-    df = pandas.read_csv('GraphData.csv', usecols=['xdate', 'temp', 'press', 'rain_1h'], parse_dates=['xdate'])
+    df = pandas.read_csv('GraphData.csv', usecols=['xdate', 'temp', 'press', 'rain_1h', 'windspeed'], parse_dates=['xdate'])
     df['xdate'] = pandas.to_datetime(df['xdate'])
     df.set_index('xdate', inplace=True)
 
@@ -50,17 +50,19 @@ def _draw_2axis_graph(screen, surface, rect, times, y1, ylabel1, y2, ylabel2,
     yaxis = df['temp']
     y2axis = df['press']
     y3axis = df['rain_1h']
+    y4axis = df['windspeed']
 
-    fig, (ax, ax2, ax3) = plt.subplots(3, figsize=(4.9, 3.0))
+    fig, (ax, ax2, ax3, ax4) = plt.subplots(4, 1, sharex=False, figsize=(4.9, 3.0))
     plt.subplots_adjust(hspace=2.0)
 
     ax.plot(xaxis, yaxis, color='red', linewidth=0.4)
     ax2.plot(xaxis, y2axis, color='blue', linewidth=0.4)
-    ax3.plot(xaxis, y3axis, color='blue', linewidth=0.4)
+    ax3.bar(xaxis, y3axis, color='blue', width=5/24/60)
+    ax4.bar(xaxis, y4axis, color='blue', width=5/24/60)
 
-    ax.set(xlabel='', ylabel='')
-    ax2.set(xlabel='', ylabel='')
-    ax3.set(xlabel='', ylabel='')
+    #ax.set(title='Eeofnwoen', xlabel='XX', ylabel='YY')
+    #ax2.set(title='Eeofnwoen', xlabel='', ylabel='')
+    #ax3.set(title='Eeofnwoen', xlabel='', ylabel='')
 
     ax.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
     ax.tick_params(axis='y', labelsize=8, colors='white')
@@ -68,10 +70,13 @@ def _draw_2axis_graph(screen, surface, rect, times, y1, ylabel1, y2, ylabel2,
     ax2.tick_params(axis='y', labelsize=8, colors='white')
     ax3.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
     ax3.tick_params(axis='y', labelsize=8, colors='white')
+    ax4.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
+    ax4.tick_params(axis='y', labelsize=8, colors='white')
 
     ax.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
     ax2.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
     ax3.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
+    ax4.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
 
     # Set ticks every hour
     ax.xaxis.set_major_locator(plt.LinearLocator(6))
@@ -80,14 +85,18 @@ def _draw_2axis_graph(screen, surface, rect, times, y1, ylabel1, y2, ylabel2,
     plt.setp(ax2.get_xticklabels(), rotation=0, ha='center')
     ax3.xaxis.set_major_locator(plt.LinearLocator(6))
     plt.setp(ax3.get_xticklabels(), rotation=0, ha='center')
+    ax4.xaxis.set_major_locator(plt.LinearLocator(6))
+    plt.setp(ax4.get_xticklabels(), rotation=0, ha='center')
 
     # Set major ticks format
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
     ax2.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
     ax3.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
+    ax4.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
     ax.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.1f} °C"))
     ax2.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.0f} pa"))
     ax3.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.1f} mm"))
+    ax4.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.1f} m/s"))
 
     # Convert to pygame image
     f = io.BytesIO()
