@@ -2,7 +2,7 @@
 
 Weather Station for Raspberry Pi and Small LCDs  
 
-![](.README_images/d2759920.png)
+![](https://github.com/SWhardfish/WeatherPiDisplay/blob/master/WeatherDisplayExample.png)
 
 ---
 
