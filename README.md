@@ -2,13 +2,14 @@
 
 Weather Station for Raspberry Pi and Small LCDs  
 
-![](.README_images/b4322710.png)
+![](.README_images/d2759920.png)
+
 ---
 
 
-## Feature
+## Features
 
-- Modularized display parts  
+- Modularized display parts 
 - Heat Index color / UV Index color support  
 - Custom module support
   [External modules](#external-modules)
@@ -18,7 +19,7 @@ Weather Station for Raspberry Pi and Small LCDs
 
 ## Installation
 
-### install and update tools
+### Install and update tools
 
 ```bash
 sudo apt-get update -y && sudo apt-get upgrade -y
@@ -26,23 +27,19 @@ sudo apt-get install rng-tools gettext -y
 sudo apt-get install python3-pygame python3-pillow -y
 ```
 
-### install WeatherPi
+### Install WeatherPi
 
 ```bash
 git clone https://github.com/SWhardfish/WStationDisplay
 cd WeatherPi
 ```
 
-### copy config file and customize it
+### Copy config file and customise it
+
+Replace the XXXXXXX for the OpenWeathermap appid and optionally the Google Maps API key. Also update the address and long/lat for your location.
 
 ```bash
-cp example.240x320.config.json config.json
-```
-
-or
-
-```bash
-cp example.480x320.config.json config.json
+cp example.480x800.config.json config.json
 ```
 
 #### config.json
@@ -53,16 +50,16 @@ cp example.480x320.config.json config.json
 | google_api_key          | optional |                                          | [Google Geocoding API key](https://developers.google.com/maps/documentation/geocoding/start)                       |
 | address                 | optional |                                          | The address of a location. <br> latitude and longitude can be omitted if google_api_key and address are specified. |
 | latitude <br> longitude | required |                                          | The latitude and longitude of a location (in decimal degrees). Positive is east, negative is west.                 |
-| locale                  | required | en_US.UTF-8                              | Locale. Specify the display language of time and weather information.                                              |
+| locale                  | required | en_GB.UTF-8                              | Locale. Specify the display language of time and weather information.                                              |
 | units                   | required | metric                                   | Unit of weather 　 information. (imperial: Fahrenheit, metric: Celsius)                                            |
-| SDL_FBDEV               | required | /dev/fb1                                 | Frame buffer device to use in the linux fbcon driver, instead of /dev/fb0.                                         |
+| SDL_FBDEV               | required | /dev/fb0                                 | Frame buffer device to use in the linux fbcon driver.                                         |
 | display                 | required |                                          | Display size. [Width, Height]                                                                                      |
-| fonts.name              | required | Sans                                     | Font name.                                                                                                         |
-| fonts.size              | required | {"large": 30, "medium": 22, "small": 14} | Font size list. (Style name and point)                                                                             |
+| fonts.name              | required | ARIALUNI                                 | Font name.                                                                                                         |
+| fonts.size              | required | {xlarge": 40, "mlarge": 35, "large": 30, "medium": 22, "smallmedium": 18, "small": 16, "xsmall": 12} | Font size list. (Style name and point)                                                                             |
 
 - for language-support, units, latitude and longitude please refer to -> **[OpenWeather API Docs](https://openweathermap.org/api/one-call-api)**
 
-### setup the services
+### Setting up the services
 
 ```bash
 cd
@@ -73,7 +70,7 @@ sudo chmod +x WeatherPi.py
 sudo systemctl enable WeatherPi
 ```
 
-### run python with root privileges
+### Run python with root privileges
 
 - this is useful if you like to run your python scripts on boot and with sudo support in python
 
@@ -82,7 +79,7 @@ sudo chown -v root:root /usr/bin/python3
 sudo chmod -v u+s /usr/bin/python3
 ```
 
-### setting up python3 as default interpreter
+### sStting up python3 as default interpreter
 
 - this should start your wanted python version just by typing `python` in the terminal
 - helps if you have projects in python2 and python3 and don't want to hassle with the python version in your service scripts
@@ -104,13 +101,13 @@ sudo pip3 install Adafruit_DHT
 sudo pip3 install pyusb
 ```
 
-- if you use WeatherForcustGraph, install matplotlib
+- You must install matplotlib to be able to generate the Weather historical graphs.
 
 ```bash
 sudo pip3 install matplotlib
 ```
 
-### test
+### Test
 
 ```bash
 ./WeatherPi.py [--debug]
@@ -118,9 +115,9 @@ sudo pip3 install matplotlib
 
 ## Customize weather icons
 
-By default, the OpenWeather icon is resized to display, but you can change it to any icon you like.
+By default, the OpenWeather icons are resised to the display, but you can change the to any icon you like.
 To change the icons, place the following 18 icons in the icons folder:  
-(デフォルトでは OpenWeather のアイコンを表示しますが、icons フォルダに以下の 18 個のファイルを用意すれば、変更することができます。)
+
 
 - 01d.pnng, 01n.png, 02d.pnng, 02n.png, 03d.pnng, 03n.png, 04d.pnng, 04n.png, 09d.pnng, 09n.png, 10d.pnng, 10n.png, 11d.pnng, 11n.png, 13d.pnng, 13n.png, 50d.pnng, 50n.png,
 
@@ -139,7 +136,6 @@ To change the icons, place the following 18 icons in the icons folder:
 ## I18n
 
 You can change the display language of dates and information.  
-(日付と情報の表示言語を変更することができます。)
 
 <img width="480" alt="480x320 ja" src="https://user-images.githubusercontent.com/129797/82272445-9b308500-99b5-11ea-86bb-f590bd726338.png">
 
@@ -151,8 +147,7 @@ fig 240x320 ja
 
 ### Font
 
-Install the font for your locale. I recommend [Google Fonts](https://fonts.google.com/) and [Google NotoFonts](https://www.google.com/get/noto/).  
-(ロケールにあったフォントをインストールします。日本語であれば、"Noto Sans CJK JP"をインストールして、等幅フォント"Noto Sans CJK JP"を設定することを勧めます。)
+Install the font for your locale. I recommend using the [Google Fonts](https://fonts.google.com/) and [Google ARIALUNI](https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/ipwn/arialuni.ttf) as used in this build.  
 
 [How to install fonts](https://www.google.com/get/noto/help/install/)
 
@@ -187,16 +182,17 @@ All modules require the following configuration:
 
 ### Built-in Modules
 
-| Name            | Description                         | Options                                 | Size              |
-| --------------- | ----------------------------------- | --------------------------------------- | ----------------- |
-| Alerts          | Any severe weather alerts pertinent | None                                    | 240x15 - 480x15   |
-| Clock           | Current Time                        | None                                    | 140x60            |
-| Location        | Current location                    |                                         | 140x15            |
-| Weather         | Current Weather                     | icon_size (default 100)                 | 240x100 - 480x100 |
-| WeatherForecast | Weather Forecast                    | forecast_days<br>icon_size (default 50) | 240x80 - 480x80   |
-| SunriseSuset    | Sunrise, Sunset time                | icon_size (default 40)                  | 80x80             |
-| MoonPhase       | Moon Phase                          | icon_size (default 50)                  | 80x80             |
-| Wind            | Wind direction, speed               | icon_size (default 30)                  | 80x80             |
+| Name                | Description                         | Options                                 | Size              |
+| ------------------- | ----------------------------------- | --------------------------------------- | ----------------- |
+| Alerts              | Any severe weather alerts pertinent | None                                    | 240x15 - 480x15   |
+| Clock               | Current Time                        | None                                    | 140x60            |
+| Location            | Current location                    |                                         | 140x15            |
+| Weather             | Current Weather                     | icon_size (default 100)                 | 240x100 - 480x100 |
+| WeatherForecast     | Weather Forecast                    | forecast_days<br>icon_size (default 50) | 240x80 - 480x80   |
+| WeatherHistoryGraph | Weather History                     | history is set to store the last 24h    | 450x480           |
+|SunriseSunset        | Sunrise, Sunset time                | icon_size (default 40)                  | 80x80             |
+| MoonPhase           | Moon Phase                          | icon_size (default 50)                  | 80x80             |
+| Wind                | Wind direction, speed               | icon_size (default 30)                  | 80x80             |
 
 ### External modules
 
@@ -215,11 +211,10 @@ All modules require the following configuration:
 ## Plots a graph
 
 Temperature and humidity sensors and weather forecast data can be displayed in a graph.
-（温湿度センサーや気象予想データをグラフで表示することができます。）
 
 - Temperature and humidity sensor modules (DHT, DigisparkTemper, IrMagitianT, NatureRemo, TEMPer)
   Each module holds the last 6 hours of sensor data and can display it graphically. To plot the graph, define the graph drawing area with "graph_rect" parameter in the module config.
-  （各モジュールは過去６時間分のセンサーデータを保持して、それをグラフで表示することができます。グラフを表示するには、モジュールの config に"graph_rect"パラメータでグラフの描画領域を定義します。）
+
 
   example config:
 
@@ -234,9 +229,8 @@ Temperature and humidity sensors and weather forecast data can be displayed in a
   }
   ```
 
-- WeatherGorcustGraph module
-  It can graphically displays the weather data for the next 48 hours or 7 days provided by OpenWeather. To plot the graph, define up to two weather condition names with the conditions parameter in the module's config.
-  （OpenWeather が提供する今後 48 時間または 7 日間の天気データをグラフィカルに表示できます。グラフを表示するには、モジュールの config に conditions パラメータで気象条件名を最大２つまで定義します。）
+- WeatherForcastGraph module
+  It can graphically display the weather data for the next 48 hours or 7 days provided by OpenWeather. To plot the graph, define up to two weather condition names with the conditions parameter in the module's config.
 
   ![fig](https://user-images.githubusercontent.com/129797/74575281-b4e2ba80-4fc9-11ea-8b8b-72ca6b28c418.png)
 
@@ -253,8 +247,7 @@ Temperature and humidity sensors and weather forecast data can be displayed in a
   }
   ```
 
-  - Abailable block and conditions are following:
-    （有効な block と condition は以下の通りです）
+  - Available block and conditions are following:
     hourly:
     temperature, apparentTemperature, dewPoint, humidity,
     pressure, windSpeed, uvIndex, ozone
@@ -270,9 +263,9 @@ Temperature and humidity sensors and weather forecast data can be displayed in a
 
 ## Credit
 
-- [WeatherPi_TFT](https://github.com/LoveBootCaptain/WeatherPi_TFT) His wonderful software is the beginning of my project
+- [WeatherPi_TFT](https://github.com/LoveBootCaptain/WeatherPi_TFT) His python application is what got me started working on this.
+- [WeatherPi](https://github.com/miyaichi/WeatherPi) For his excellent coding skills and modularising the original [WeatherPi_TFT](https://github.com/LoveBootCaptain/WeatherPi_TFT) and inspiration.
 - [adafruit](https://github.com/adafruit) for [hardware](https://www.adafruit.com/) and [tutorials](https://learn.adafruit.com/)
 - [OpenWeather](https://openweathermap.org/) weather api and [documentation](https://openweathermap.org/api/one-call-api)
-- [気象庁防災情報 XML フォーマット](http://xml.kishou.go.jp/)
 - [Google Fonts](https://fonts.google.com/)
 - [Google NotoFonts](https://www.google.com/get/noto/)
