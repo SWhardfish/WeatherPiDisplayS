@@ -1,40 +1,20 @@
 # WeatherPi
 
 Weather Station for Raspberry Pi and Small LCDs  
-(Raspberry Pi と小型液晶向けのウェザーステーション)
 
+![](.README_images/b4322710.png)
 ---
 
-**Notice**: DarkSky has announced the suspension of new registrations for its APIs and a close at the end of 2021. Accordingly, this repository has been modified to use the OpenWeather API.　 DarkSky version is saved in "Dark_Sky_API_Version" branch, so please refer to it if you need.
-
-**注意**: DarkSky は API の新規登録を停止し、2021 年末で停止することを発表しました。それに伴いこのリポジトリは OpenWeather API を利用するよう変更しています。DarkSky 版は"Dark_Sky_API_Version"ブランチに保存してありますので、必要であれば参照してください。
-
-[Dark Sky Has a New Home](https://blog.darksky.net/dark-sky-has-a-new-home/)
-
----
-
-![Front View](https://user-images.githubusercontent.com/129797/56935584-e8348580-6b2c-11e9-940a-002c280885bd.png)
-
-<img width="480" alt="480x320 en" src="https://user-images.githubusercontent.com/129797/82272396-76d4a880-99b5-11ea-981c-7afc8e6df05d.png">
-
-fig: 480x320 en
-
-<img width="240" alt="240x320 en" src="https://user-images.githubusercontent.com/129797/82272398-789e6c00-99b5-11ea-9065-14d34c89c5af.png">
-
-fig: 240x320 en
 
 ## Feature
 
 - Modularized display parts  
-  (表示パーツはモジュール化してあるので、カスタマイズが可能です)
 - Heat Index color / UV Index color support  
-  (Heat Index/UV Index で表示色を変更します)
 - Custom module support
-  (カスタムモジュールを作成して組み込むことができます)  
   [External modules](#external-modules)
-- i18n (internationalization) support  
-  (ロケールの変更や表示文字列の翻訳が可能です)  
-  [I18n](#I18n)
+- i18n (internationalization) support
+- Historical graphs for Temperature, Pressure, Precipitation and Windspeed  
+
 
 ## Installation
 
@@ -49,7 +29,7 @@ sudo apt-get install python3-pygame python3-pillow -y
 ### install WeatherPi
 
 ```bash
-git clone https://github.com/miyaichi/WeatherPi.git
+git clone https://github.com/SWhardfish/WStationDisplay
 cd WeatherPi
 ```
 
