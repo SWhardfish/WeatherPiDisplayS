@@ -1,0 +1,101 @@
+{
+  "openweather_appid": "xxxxxxxxxxxxxxxxxx",
+  "google_api_key": "xxxxxxxxxxxxxxxxxx",
+
+  "address": "London",
+  "latitude": 51.509865,
+  "longitude": -0.118092,
+
+  "locale": "en_GB.UTF-8",
+  "units": "metric",
+
+  "SDL_FBDEV": "/dev/fb0",
+  "display": [480, 800],
+  "fonts": {
+    "name": "fonts/ARIALUNI.ttf",
+    "size": {
+      "xlarge": 40,
+      "mlarge": 35,
+      "large": 30,
+      "medium": 22,
+      "smallmedium": 18,
+      "small": 16,
+      "xsmall": 12
+    }
+  },
+
+  "modules": [
+    {
+      "module": "Clock",
+      "config": {
+        "rect": [0, 10, 480, 70]
+      }
+    },
+    {
+      "module": "Location",
+      "config": {
+        "rect": [0, 0, 0, 0]
+      }
+    },
+    {
+      "module": "Alerts",
+      "config": {
+        "rect": [5, 400, 470, 40]
+      }
+    },
+    {
+      "module": "Weather",
+      "config": {
+        "rect": [10, 80, 480, 120],
+        "icon_size": 130
+      }
+    },
+    {
+      "module": "WeatherForecast",
+      "config": {
+        "rect": [0, 210, 480, 80],
+        "forecast_days": 6,
+        "icon_size": 70
+      }
+    },
+    {
+      "module": "SunriseSuset",
+      "config": {
+        "rect": [0, 300, 80, 80],
+        "icon_size": 50
+      }
+    },
+    {
+      "module": "MoonPhase",
+      "config": {
+        "rect": [80, 300, 80, 80],
+        "icon_size": 50
+      }
+    },
+    {
+      "module": "Wind",
+      "config": {
+        "rect": [160, 300, 80, 80],
+        "icon_size": 30
+      }
+    },
+    {
+      "module": "TemperatureModule",
+      "config": {
+        "rect": [0, 0, 480, 500]
+      }
+    },
+    {
+      "module": "WeatherHistoryGraph",
+      "config": {
+        "rect": [
+          0,
+          450,
+          480,
+          450
+        ],
+        "days_ago": 0
+      }
+   }
+  ]
+}

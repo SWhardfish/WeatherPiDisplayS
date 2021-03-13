@@ -101,6 +101,11 @@ class Weather(WeatherModule):
         except KeyError:
             rain_1h = '0'
         windspeed = current["wind_speed"]
+        try:
+            windgust = current["wind_gust"]
+        except KeyError:
+            windgust = 'nan'
+        print(windgust)
         long_summary = daily["weather"][0]["description"]
         temperature_high = daily["temp"]["max"]
         temperature_low = daily["temp"]["min"]
@@ -122,6 +127,7 @@ class Weather(WeatherModule):
         """
         HistoryGraphLog - log data to GraphDatalog.txt
         """
+        # TODO: Add maintenance of GraphDataLog.txt for removing old data to keep file small.
         xtemperature = temperature
         xtemperature = xtemperature[:-2]
         xpressure = pressure
@@ -132,10 +138,10 @@ class Weather(WeatherModule):
         file = open(graph, "a", newline='')
 
         with file:
-            myfields = ['xdate', 'temp', 'press', 'rain_1h', 'windspeed']
+            myfields = ['xdate', 'temp', 'press', 'rain_1h', 'windspeed', 'windgust']
             writer = csv.DictWriter(file, fieldnames=myfields)
             #writer.writeheader()
-            writer.writerow({'xdate': xtimestamp, 'temp': xtemperature, 'press': xpressure, 'rain_1h': rain_1h, 'windspeed': windspeed})
+            writer.writerow({'xdate': xtimestamp, 'temp': xtemperature, 'press': xpressure, 'rain_1h': rain_1h, 'windspeed': windspeed, 'windgust': windgust})
         #file.close()
         df = pandas.read_csv(graph)
 

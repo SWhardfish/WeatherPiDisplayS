@@ -18,7 +18,7 @@ from matplotlib import font_manager
 matplotlib.pyplot.switch_backend("Agg")
 matplotlib.rcParams['font.family'] = "arial"
 
-dpi = 100
+#dpi = 50
 
 # thread lock
 lock = threading.Lock()
@@ -40,7 +40,7 @@ def synchronized(wrapped):
 def _draw_2axis_graph(screen, surface, rect, times, y1, ylabel1, y2, ylabel2,
                       title, yscale1, yscale2):
     # Plot graph
-    df = pandas.read_csv('GraphData.csv', usecols=['xdate', 'temp', 'press', 'rain_1h', 'windspeed'], parse_dates=['xdate'])
+    df = pandas.read_csv('GraphData.csv', usecols=['xdate', 'temp', 'press', 'rain_1h', 'windspeed', 'windgust'], parse_dates=['xdate'])
     df['xdate'] = pandas.to_datetime(df['xdate'])
     df.set_index('xdate', inplace=True)
 
@@ -51,18 +51,21 @@ def _draw_2axis_graph(screen, surface, rect, times, y1, ylabel1, y2, ylabel2,
     y2axis = df['press']
     y3axis = df['rain_1h']
     y4axis = df['windspeed']
+    y5axis = df['windgust']
 
-    fig, (ax, ax2, ax3, ax4) = plt.subplots(4, 1, sharex=False, figsize=(4.9, 3.0))
+    fig, (ax, ax2, ax3, ax4) = plt.subplots(4, 1, sharex=True, figsize=(4.9, 3.3))
     plt.subplots_adjust(hspace=2.0)
 
-    ax.plot(xaxis, yaxis, color='red', linewidth=0.4)
-    ax2.plot(xaxis, y2axis, color='blue', linewidth=0.4)
-    ax3.bar(xaxis, y3axis, color='blue', width=5/24/60)
-    ax4.bar(xaxis, y4axis, color='blue', width=5/24/60)
+    ax.plot(xaxis, yaxis, color='Crimson', linewidth=0.4)
+    ax2.plot(xaxis, y2axis, color='Blue', linewidth=0.4)
+    ax3.bar(xaxis, y3axis, color='CornflowerBlue', width=5/24/60)
+    ax4.bar(xaxis, y4axis, color='SeaGreen', width=2.5/24/60)
+    ax4.scatter(xaxis, y5axis, color='LightGreen', s=0.1)
 
-    #ax.set(title='Eeofnwoen', xlabel='XX', ylabel='YY')
-    #ax2.set(title='Eeofnwoen', xlabel='', ylabel='')
-    #ax3.set(title='Eeofnwoen', xlabel='', ylabel='')
+    ax.set_title('Temperature - °C', loc='center', color='white', size='9')
+    ax2.set_title('Pressure - pa', loc='center', color='white', size='9')
+    ax3.set_title('Precipitation - mm', loc='center', color='white', size='9')
+    ax4.set_title('Windspeed - m/s', loc='center', color='white', size='9')
 
     ax.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
     ax.tick_params(axis='y', labelsize=8, colors='white')
