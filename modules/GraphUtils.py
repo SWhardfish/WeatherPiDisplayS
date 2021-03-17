@@ -18,7 +18,7 @@ from matplotlib import font_manager
 matplotlib.pyplot.switch_backend("Agg")
 matplotlib.rcParams['font.family'] = "arial"
 
-dpi = 100
+#dpi = 50
 
 # thread lock
 lock = threading.Lock()
@@ -40,7 +40,8 @@ def synchronized(wrapped):
 def _draw_2axis_graph(screen, surface, rect, times, y1, ylabel1, y2, ylabel2,
                       title, yscale1, yscale2):
     # Plot graph
-    df = pandas.read_csv('GraphData.csv', usecols=['xdate', 'temp', 'press', 'rain_1h', 'windspeed'], parse_dates=['xdate'])
+    #df = pandas.read_csv('GraphData.csv', usecols=['xdate', 'temp', 'press', 'rain_1h', 'windspeed'], parse_dates=['xdate'])
+    df = pandas.read_csv('GraphData.csv', usecols=['xdate', 'temp'], parse_dates=['xdate'])
     df['xdate'] = pandas.to_datetime(df['xdate'])
     df.set_index('xdate', inplace=True)
 
@@ -48,59 +49,31 @@ def _draw_2axis_graph(screen, surface, rect, times, y1, ylabel1, y2, ylabel2,
     xaxis = df.index
     #x3axis = df.index
     yaxis = df['temp']
-    y2axis = df['press']
-    y3axis = df['rain_1h']
-    y4axis = df['windspeed']
 
-    fig, (ax, ax2, ax3, ax4) = plt.subplots(4, 1, sharex=False, figsize=(4.9, 3.0))
+    fig, (ax) = plt.subplots(1, 1, sharex=True, figsize=(2.6, 0.18))
     plt.subplots_adjust(hspace=2.0)
 
-    ax.plot(xaxis, yaxis, color='red', linewidth=0.4)
-    ax2.plot(xaxis, y2axis, color='blue', linewidth=0.4)
-    ax3.bar(xaxis, y3axis, color='blue', width=5/24/60)
-    ax4.bar(xaxis, y4axis, color='blue', width=5/24/60)
 
-    #ax.set(title='Eeofnwoen', xlabel='XX', ylabel='YY')
-    #ax2.set(title='Eeofnwoen', xlabel='', ylabel='')
-    #ax3.set(title='Eeofnwoen', xlabel='', ylabel='')
+    ax.plot(xaxis, yaxis, color='Crimson', linewidth=0.4)
 
-    ax.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
+    #ax.set_title('Temperature - °C', loc='center', color='white', size='9')
+
+    #ax.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
     ax.tick_params(axis='y', labelsize=8, colors='white')
-    ax2.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
-    ax2.tick_params(axis='y', labelsize=8, colors='white')
-    ax3.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
-    ax3.tick_params(axis='y', labelsize=8, colors='white')
-    ax4.tick_params(axis='x', labelsize=8, colors='white', rotation=0)
-    ax4.tick_params(axis='y', labelsize=8, colors='white')
 
-    ax.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
-    ax2.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
-    ax3.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
-    ax4.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
+    #ax.grid(which='major', axis='both', color='grey', linestyle='dotted', linewidth=0.4)
 
     # Set ticks every hour
     ax.xaxis.set_major_locator(plt.LinearLocator(6))
     plt.setp(ax.get_xticklabels(), rotation=0, ha='center')
-    ax2.xaxis.set_major_locator(plt.LinearLocator(6))
-    plt.setp(ax2.get_xticklabels(), rotation=0, ha='center')
-    ax3.xaxis.set_major_locator(plt.LinearLocator(6))
-    plt.setp(ax3.get_xticklabels(), rotation=0, ha='center')
-    ax4.xaxis.set_major_locator(plt.LinearLocator(6))
-    plt.setp(ax4.get_xticklabels(), rotation=0, ha='center')
 
     # Set major ticks format
-    ax.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
-    ax2.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
-    ax3.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
-    ax4.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
-    ax.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.1f} °C"))
-    ax2.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.0f} pa"))
-    ax3.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.1f} mm"))
-    ax4.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.1f} m/s"))
+    #ax.xaxis.set_major_formatter(mdates.DateFormatter('%I %p'))
+    #ax.yaxis.set_major_formatter(StrMethodFormatter(u"{x:.1f} °C"))
 
     # Convert to pygame image
     f = io.BytesIO()
-    plt.tight_layout()
+    #plt.tight_layout()
     plt.savefig(f, format="png", transparent=True, bbox_inches='tight')
     plt.close(fig)
     f.seek(0)

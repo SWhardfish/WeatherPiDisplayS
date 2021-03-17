@@ -1,8 +1,9 @@
-# WeatherPi
+# WeatherPiDisplay
 
-Weather Station for Raspberry Pi and Small LCDs  
-
-![](https://github.com/SWhardfish/WeatherPiDisplay/blob/master/WeatherDisplayExample.png)
+Weather Station for Raspberry Pi and Small LCDs forked from [WeatherPi_TFT](https://github.com/LoveBootCaptain/WeatherPi_TFT) and [WeatherPi](https://github.com/miyaichi/WeatherPi). 
+The purpose of this distribution is to provide an aesthetically pleasing layout and configuration.
+ 
+![](.README_images/d2759920.png)
 
 ---
 

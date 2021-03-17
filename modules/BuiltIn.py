@@ -5,6 +5,8 @@
 import datetime
 import logging
 import time
+#from gpiozero import LED
+#from time import sleep
 import csv
 import pandas
 from modules.WeatherModule import WeatherModule, Utils
@@ -119,9 +121,10 @@ class Weather(WeatherModule):
         uv_index = str(uv_index)
         pressure = Utils.pressure_text(int(pressure))
 
-        """
-        HistoryGraphLog - log data to GraphDatalog.txt
-        """
+
+        #HistoryGraphLog - log data to GraphDatalog.txt
+        
+        # TODO: Add maintenance of GraphDataLog.txt for removing old data to keep file small.
         xtemperature = temperature
         xtemperature = xtemperature[:-2]
         xpressure = pressure
@@ -151,9 +154,9 @@ class Weather(WeatherModule):
         #Remove time from datetime
         #df['xdate'] = pandas.to_datetime(df['xdate']).dt.date
         df[mask].to_csv('GraphData.csv', index=False)
-        """
-        END GraphLog
-        """
+        
+        #END GraphLog
+
 
 
         text_x = weather_icon.get_size()[0]
@@ -168,35 +171,38 @@ class Weather(WeatherModule):
                                                 _("Low"), temperature_low,
                                                 _("High"), temperature_high)
         if self.text_size(message2, "small")[0] > text_width:
-            message2 = "Feel {}  {} - {}".format(feels_like, temperature_low,
+            message2 = "{} - {}".format(feels_like, temperature_low,
                                                  temperature_high)
         message3 = "{} {}  {} {}  {} {}".format(_("Humidity"), humidity,
                                                 _("Pressure"), pressure,
                                                 _("UVindex"), uv_index)
         if self.text_size(message3, "small")[0] > text_width:
-            message3 = "{}  {}  UV {}".format(humidity, pressure, uv_index)
+            message3 = "{} {} UV {}".format(humidity, pressure, uv_index)
         max_lines = int((self.rect.height - 55) / 15)
+        """
         message4s = self.text_warp(long_summary,
                                    text_width,
                                    "small",
                                    bold=True,
                                    max_lines=max_lines)
-
+        """
         self.clear_surface()
         self.draw_image(weather_icon, (0, 0))
         self.draw_text(message1, (text_x, 15), "large", heat_color, bold=True)
-        self.draw_text(message2, (text_x, 52), "small", "white")
+        self.draw_text(message2, (text_x, 40), "smallmedium", "white")
         i = message3.index("UV")
-        (right, _bottom) = self.draw_text(message3[:i], (text_x, 70), "small",
+        (right, _bottom) = self.draw_text(message3[:i], (text_x, 57), "smallmedium",
                                           "white")
-        self.draw_text(message3[i:], (right, 70), "small", uv_color, bold=True)
-        height = 70 + (15 * (max_lines - len(message4s))) / 2
+        self.draw_text(message3[i:], (right, 57), "smallmedium", uv_color, bold=True)
+        """
+        height = 60 + (15 * (max_lines - len(message4s))) / 2
         for message in message4s:
             self.draw_text(message, (text_x, height),
                            "small",
                            "blue",
                            bold=True)
-            height += 15
+            height += 16
+        """
         self.update_screen(screen)
 
 
@@ -227,8 +233,8 @@ class DailyWeatherForecast(WeatherModule):
         message = "{}-{}".format(temperature_low, temperature_high)
 
         self.clear_surface()
-        self.draw_text(day_of_week, (0, 0), "small", "orange", align="center")
-        self.draw_text(message, (0, 17), "xsmall", "gray", align="center")
+        self.draw_text(day_of_week, (0, 0), "smallmedium", "orange", bold=True, align="center")
+        self.draw_text(message, (0, 17), "small", "white", align="center")
         self.draw_image(weather_icon,
                         ((self.rect.width - self.icon_size) / 2, 30 +
                          (self.rect.height - 30 - self.icon_size) / 2))
@@ -263,7 +269,7 @@ class WeatherForecast(WeatherModule):
             self.forecast_modules[i].draw(screen, weather, updated)
 
 
-class SunriseSuset(WeatherModule):
+class SunriseSunset(WeatherModule):
     """Sunrise, Sunset time
     """
 
@@ -286,9 +292,9 @@ class SunriseSuset(WeatherModule):
         self.clear_surface()
         self.draw_image(sun_icon, ((self.rect.width - self.icon_size) / 2,
                                    (self.rect.height - self.icon_size) / 2))
-        self.draw_text(sunrise, (0, 5), "small", "white", align="center")
-        self.draw_text(sunset, (0, self.rect.height - 20),
-                       "small",
+        self.draw_text(sunrise, (0, 5), "smallmedium", "white", align="center")
+        self.draw_text(sunset, (0, self.rect.height - 30),
+                       "smallmedium",
                        "white",
                        align="center")
         self.update_screen(screen)
@@ -317,8 +323,8 @@ class MoonPhase(WeatherModule):
 
         self.clear_surface()
         self.draw_image(moon_icon, ((self.rect.width - self.icon_size) / 2, 5))
-        self.draw_text(moon_age, (0, self.rect.height - 20),
-                       "small",
+        self.draw_text(moon_age, (0, self.rect.height - 30),
+                       "smallmedium",
                        "white",
                        align="center")
         self.update_screen(screen)
@@ -345,12 +351,12 @@ class Wind(WeatherModule):
         wind_deg = Utils.wind_bearing_text(wind_deg)
 
         self.clear_surface()
-        self.draw_text(wind_deg, (0, 5), "small", "white", align="center")
+        self.draw_text(wind_deg, (0, 5), "smallmedium", "white", align="center")
         self.draw_image(wind_icon,
                         ((self.rect.width - self.icon_size) / 2, 20 +
                          (self.rect.height - 40 - self.icon_size) / 2))
-        self.draw_text(wind_speed, (0, self.rect.height - 20),
-                       "small",
+        self.draw_text(wind_speed, (0, self.rect.height - 30),
+                       "smallmedium",
                        "white",
                        align="center")
         self.update_screen(screen)
