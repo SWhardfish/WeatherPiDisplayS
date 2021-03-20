@@ -8,7 +8,7 @@ import time
 #from gpiozero import LED
 #from time import sleep
 import csv
-import pandas
+#import pandas
 from modules.WeatherModule import WeatherModule, Utils
 
 class Alerts(WeatherModule):
@@ -121,7 +121,7 @@ class Weather(WeatherModule):
         uv_index = str(uv_index)
         pressure = Utils.pressure_text(int(pressure))
 
-
+        """DISABLE GRAPH
         #HistoryGraphLog - log data to GraphDatalog.txt
         
         # TODO: Add maintenance of GraphDataLog.txt for removing old data to keep file small.
@@ -156,7 +156,7 @@ class Weather(WeatherModule):
         df[mask].to_csv('GraphData.csv', index=False)
         
         #END GraphLog
-
+        """
 
 
         text_x = weather_icon.get_size()[0]

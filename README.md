@@ -1,4 +1,4 @@
-# WeatherPiDisplay
+# WeatherPiDisplay MINI NOGRAPH
 
 Weather Station for Raspberry Pi and Small LCDs forked from [WeatherPi_TFT](https://github.com/LoveBootCaptain/WeatherPi_TFT) and [WeatherPi](https://github.com/miyaichi/WeatherPi). 
 The purpose of this distribution is to provide an aesthetically pleasing layout and configuration.
