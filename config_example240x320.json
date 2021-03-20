@@ -1,0 +1,83 @@
+{
+  "openweather_appid": "",
+  "google_api_key": "",
+
+  "address": "London",
+  "latitude": 50.950713,
+  "longitude": -0.808415,
+
+  "locale": "en_GB.UTF-8",
+  "units": "metric",
+
+  "SDL_FBDEV": "/dev/fb1",
+  "display": [240, 320],
+  "fonts": {
+    "name": "fonts/ARIALUNI.ttf",
+    "size": {
+      "xlarge": 25,
+      "mlarge": 20,
+      "large": 20,
+      "medium": 20,
+      "smallmedium": 18,
+      "small": 18,
+      "xsmall": 10
+    }
+  },
+
+  "modules": [
+    {
+      "module": "Clock",
+      "config": {
+        "rect": [0, 0, 240, 60]
+      }
+    },
+    {
+      "module": "Weather",
+      "config": {
+        "rect": [0, 50, 240, 100],
+        "icon_size":85
+      }
+    },
+    {
+      "module": "WeatherForecast",
+      "config": {
+        "rect": [0, 165, 240, 80],
+        "forecast_days": 3,
+        "icon_size": 55
+      }
+    },
+    {
+      "module": "SunriseSunset",
+      "config": {
+        "rect": [0, 245, 80, 80],
+        "icon_size": 50
+      }
+    },
+    {
+      "module": "MoonPhase",
+      "config": {
+        "rect": [80, 245, 80, 80],
+        "icon_size": 40
+      }
+    },
+    {
+      "module": "Wind",
+      "config": {
+        "rect": [160, 245, 80, 80],
+        "icon_size": 30
+      }
+    },
+    {
+      "module": "WeatherHistoryGraph",
+      "config": {
+        "rect": [
+          0,
+          130,
+          240,
+          30
+        ],
+        "days_ago": 0
+      }
+   }
+  ]
+}
