@@ -67,17 +67,5 @@
         "icon_size": 30
       }
     },
-    {
-      "module": "WeatherHistoryGraph",
-      "config": {
-        "rect": [
-          0,
-          130,
-          240,
-          30
-        ],
-        "days_ago": 0
-      }
-   }
   ]
 }
