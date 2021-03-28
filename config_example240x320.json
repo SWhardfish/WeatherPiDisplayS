@@ -3,8 +3,8 @@
   "google_api_key": "",
 
   "address": "London",
-  "latitude": 50.950713,
-  "longitude": -0.808415,
+  "latitude": 59.210833,
+  "longitude": -0.506912,
 
   "locale": "en_GB.UTF-8",
   "units": "metric",
@@ -35,7 +35,7 @@
       "module": "Weather",
       "config": {
         "rect": [0, 50, 240, 100],
-        "icon_size":85
+        "icon_size":55
       }
     },
     {
@@ -43,14 +43,14 @@
       "config": {
         "rect": [0, 165, 240, 80],
         "forecast_days": 3,
-        "icon_size": 55
+        "icon_size": 32
       }
     },
     {
       "module": "SunriseSunset",
       "config": {
         "rect": [0, 245, 80, 80],
-        "icon_size": 50
+        "icon_size": 30
       }
     },
     {
@@ -66,6 +66,6 @@
         "rect": [160, 245, 80, 80],
         "icon_size": 30
       }
-    },
+    }
   ]
 }
