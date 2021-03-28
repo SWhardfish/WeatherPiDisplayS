@@ -5,8 +5,7 @@ The purpose of this distribution is to provide an adapted layout and configurati
 
 I use this on my home office desk for date, time and weather information.
  
-![](.README_images/7bc24d7a.png)
-
+![](.README_images/870abc8d.png)
 ---
 
 
@@ -100,11 +99,14 @@ update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2
 
 ## Customize weather icons
 
-By default, the OpenWeather icons are resised to the display, but you can change the to any icon you like.
-To change the icons, place the following 18 icons in the icons folder:  
+Below is the list of default OpenWeatheMap icons where as this implementation is using a set of customised icons.
+
+By default, the OpenWeather icons are resized to the display, but you can change to any icon you like.
+To change the icons, place the following 18 icons in the icons folder.  
 
 
 - 01d.png, 01n.png, 02d.png, 02n.png, 03d.png, 03n.png, 04d.png, 04n.png, 09d.png, 09n.png, 10d.png, 10n.png, 11d.png, 11n.png, 13d.png, 13n.png, 50d.png, 50n.png,
+
 
 | Day icon name | Default                                                             | Night icon name | Default                                                             | Description      |
 | ------------- | ------------------------------------------------------------------- | --------------- | ------------------------------------------------------------------- | ---------------- |
@@ -122,13 +124,14 @@ To change the icons, place the following 18 icons in the icons folder:
 
 You can change the display language of dates and information.  
 
-![](.README_images/ade73348.png)
+![](.README_images/a4f30095.png)
+
 
 Swedish (sv_SE.UTF-8)
 
-![](.README_images/8da37a82.png)
+![](.README_images/8c88cd61.png)
 
-Japanese (jp.UTF-8)
+Japanese (ja_JP.UTF-8)
 
 ### Font
 
