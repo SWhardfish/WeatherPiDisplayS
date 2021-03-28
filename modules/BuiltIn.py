@@ -171,7 +171,7 @@ class Weather(WeatherModule):
                                                 _("Low"), temperature_low,
                                                 _("High"), temperature_high)
         if self.text_size(message2, "small")[0] > text_width:
-            message2 = "{} - {}".format(feels_like, temperature_low,
+            message2 = "{}-{}°C".format(feels_like, temperature_low,
                                                  temperature_high)
         message3 = "{} {}  {} {}  {} {}".format(_("Humidity"), humidity,
                                                 _("Pressure"), pressure,
@@ -187,11 +187,11 @@ class Weather(WeatherModule):
                                    max_lines=max_lines)
         """
         self.clear_surface()
-        self.draw_image(weather_icon, (0, 0))
-        self.draw_text(message1, (text_x, 15), "large", heat_color, bold=True)
-        self.draw_text(message2, (text_x, 40), "smallmedium", "white")
+        self.draw_image(weather_icon, (15, 20))
+        self.draw_text(message1, (text_x+28, 15), "large", heat_color, bold=True)
+        self.draw_text(message2, (text_x+28, 40), "smallmedium", "white")
         i = message3.index("UV")
-        (right, _bottom) = self.draw_text(message3[:i], (text_x, 57), "smallmedium",
+        (right, _bottom) = self.draw_text(message3[:i], (text_x+28, 57), "smallmedium",
                                           "white")
         self.draw_text(message3[i:], (right, 57), "smallmedium", uv_color, bold=True)
         """
@@ -230,7 +230,7 @@ class DailyWeatherForecast(WeatherModule):
                                                  self.units)
         temperature_high = Utils.temperature_text(int(temperature_high),
                                                   self.units)
-        message = "{}-{}".format(temperature_low, temperature_high)
+        message = "{}-{}°C".format(temperature_low, temperature_high)
 
         self.clear_surface()
         self.draw_text(day_of_week, (0, 0), "smallmedium", "orange", bold=True, align="center")

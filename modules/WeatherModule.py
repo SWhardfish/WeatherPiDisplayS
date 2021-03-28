@@ -83,7 +83,7 @@ class Utils:
     def temperature_text(value, units):
         """Format temperature value to text
         """
-        return ("{}°C" if units == "metric" else "{}°f").format(value)
+        return ("{}" if units == "metric" else "{}°f").format(value)
 
     @staticmethod
     def color(name):

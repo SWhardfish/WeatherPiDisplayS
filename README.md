@@ -54,7 +54,7 @@ cp config_example240x320.json config.json
 | latitude <br> longitude | required |                                          | The latitude and longitude of a location (in decimal degrees). Positive is east, negative is west.                 |
 | locale                  | required | en_GB.UTF-8                              | Locale. Specify the display language of time and weather information.                                              |
 | units                   | required | metric                                   | Unit of weather 　 information. (imperial: Fahrenheit, metric: Celsius)                                            |
-| SDL_FBDEV               | required | /dev/fb0                                 | Frame buffer device to use in the linux fbcon driver.                                         |
+| SDL_FBDEV               | required | /dev/fb1                                 | Frame buffer device to use in the linux fbcon driver. fb1 for SPI or fb0 for HDMI                                  |
 | display                 | required | 240x320                                         | Display size. [Width=240, Height=320]                                                                                      |
 | fonts.name              | required | ARIALUNI                                 | Font name.                                                                                                         |
 | fonts.size              | required | {xlarge": 40, "mlarge": 35, "large": 30, "medium": 22, "smallmedium": 18, "small": 16, "xsmall": 12} | Font size list. (Style name and point)                                                                             |
@@ -153,7 +153,7 @@ This distribution is optmised for and comes with [ARIALUNI.ttf](https://code.goo
 
 | Name                | Description                             | Options                                 | Size              |
 | ------------------- | --------------------------------------- | --------------------------------------- | ----------------- |
-| PIR                 | PIR(Passive Infrared Ray）Motion Sens   | Delay (in sec) turning the monitor off   |                  |
+| PIR                 | PIR(Passive Infrared Ray）Motion Sens   | Delay (in sec) turning the monitor off   | -                |
 
                
 
